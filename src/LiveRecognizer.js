@@ -71,7 +71,7 @@ class LiveRecognizer extends React.Component {
       const detection = await faceapi
         .detectAllFaces(
           video,
-          new faceapi.TinyFaceDetectorOptions()
+          new faceapi.SsdMobilenetv1Options()
         )
         .withFaceLandmarks()
         .withFaceDescriptors();
@@ -128,13 +128,15 @@ export default LiveRecognizer;
 //15 total images, 2 image of test subject from the front using ssd. Best result: 0.33134250403810084
 //33 total images, 21 images of test subject where 10 are the same image from front view using ssd. Best Result: 0.35490761308480456
 //46 total images, 33 images of test subject from different angles and distances using ssd. Best Result: 0.38832424912123453
+//14 total images, 1 OLD image of test subject from the front (small image 160x160) using ssd. Best Result: 0
 
 //15 total images, 2 image of test subject from the front using tiny. Best result: 0.333197248181627
 //14 total images, 1 image of test subject from the front using tiny. Best result: 0.22026010587463674 
 //46 total images, 33 images of test subject from different angles and distances using tiny. Best Result: 0.3917487289305787
+//14 total images, 1 OLD image of test subject from the front (small image) using tiny. Best Result: 0.35043252549315534
 /*
 Result: 
 More total images doesnt make a difference
 More images of a person makes the certainty lower but works from more angles
-
+Small images makes everyone look the same
 */
