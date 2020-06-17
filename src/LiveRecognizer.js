@@ -7,7 +7,7 @@ function loadLabeledImages() {
   return Promise.all(
     labels.map(async (label) => {
       const descriptions = [];
-      let nrImages = labels === "Arvid" ? 10 : 2;
+      let nrImages = labels === "Arvid" ? 11 : 2;
       for (let i = 1; i <= nrImages; i++) {
         const img = await faceapi.fetchImage(
           `https://raw.githubusercontent.com/Mellas84/facerecognitiontest/master/src/images/${label}/${i}.jpg`
