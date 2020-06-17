@@ -1,26 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import LiveDetection from "./LiveDetection.js"
+import Recognition from "./Recognition.js"
+import LiveRecognition from "./LiveRecognizer.js"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+
+  
+
+  render() {
+    const liveDet = <LiveDetection/>
+    const liveRec = <LiveRecognition/>
+    const img = <Recognition/>
+    return (
+      <div >
+        {liveRec}
+      </div>
+    );
+  }
 }
 
 export default App;
+
