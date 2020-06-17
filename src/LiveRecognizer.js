@@ -8,7 +8,7 @@ function loadLabeledImages() {
     labels.map(async (label) => {
       const descriptions = [];
       let nrImages = 
-      label === "Arvid" ? 44
+      label === "Arvid" ? 1
       : label === "Max" ? 2 
       : 13;
       for (let i = 1; i <= nrImages; i++) {
