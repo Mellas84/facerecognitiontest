@@ -8,7 +8,7 @@ function loadLabeledImages() {
     labels.map(async (label) => {
       const descriptions = [];
       let nrImages = 
-      label === "Arvid" ? 1 
+      label === "Arvid" ? 21
       : label === "Max" ? 2 
       : 13;
       for (let i = 1; i <= nrImages; i++) {
@@ -63,14 +63,15 @@ class LiveRecognizer extends React.Component {
     let video = document.querySelector("video");
 
     const LabeledFaceDescriptors = await loadLabeledImages();
-    const faceMatcher = new faceapi.FaceMatcher(LabeledFaceDescriptors, 0.6);
+    let maxDistance = 0.6;
+    const faceMatcher = new faceapi.FaceMatcher(LabeledFaceDescriptors, maxDistance);
     document.getElementById("loading").innerHTML = "";
     setInterval(async () => {
       //SsdMobilenetv1Options <=> TinyFaceDetectorOptions
       const detection = await faceapi
         .detectAllFaces(
           video,
-          new faceapi.SsdMobilenetv1Options({ minConfidence: 0.6 })
+          new faceapi.SsdMobilenetv1Options()
         )
         .withFaceLandmarks()
         .withFaceDescriptors();
@@ -119,6 +120,20 @@ console.log(detection)
 export default LiveRecognizer;
 
 
+//Speed: 1000
 //11 total images, 9 images of test subject from different angles using ssd. Best result: 0.48381988931818065
 //3 total images, 1 image of test subject from the front using ssd. Best result: 0.20902870565343248
-//16 total images, 1 image of test subject from the front using ssd. Best result:
+//24 total images, 11 image of test subject from the front using ssd. Best result: 0.48838174473824014
+//14 total images, 1 image of test subject from the front using ssd. Best result: 0.21503420705702414
+//15 total images, 2 image of test subject from the front using ssd. Best result: 0.33134250403810084
+//33 total images, 21 images of test subject where 10 are the same image from front view using ssd. Best Result: 
+
+//15 total images, 2 image of test subject from the front using tiny. Best result: 0.333197248181627
+//14 total images, 1 image of test subject from the front using tiny. Best result: 0.22026010587463674 
+
+/*
+Result: 
+More total images doesnt make a difference
+More images of a person makes the certainty lower but works from more angles
+
+*/
