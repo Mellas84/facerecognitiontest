@@ -3,15 +3,19 @@ import "./App.css";
 import * as faceapi from "face-api.js";
 
 function loadLabeledImages() {
-  const labels = ["Arvid", "Max", "RandomImages"];
+  //if have label without reference picture "unknown" -> "label"
+  const labels = ["Max", "RandomImages"];
+
   return Promise.all(
     labels.map(async (label) => {
+
       const descriptions = [];
       let nrImages = 
-      label === "Arvid" ? 1
+      label === "Andreas" ? 0
       : label === "Max" ? 2 
       : 13;
       for (let i = 1; i <= nrImages; i++) {
+        console.log(label)
         const img = await faceapi.fetchImage(
           `https://raw.githubusercontent.com/Mellas84/facerecognitiontest/master/assets/images/${label}/${i}.jpg`
         );
@@ -20,14 +24,14 @@ function loadLabeledImages() {
           .withFaceLandmarks()
           .withFaceDescriptor();
         if (detections) {
-          console.log("success");
-          console.log(label+i)
+          //console.log("success");
+          //console.log(label+i)
           
           descriptions.push(detections.descriptor);
         }
       }
-
-      return new faceapi.LabeledFaceDescriptors(label, descriptions);
+      var result = new faceapi.LabeledFaceDescriptors(label, descriptions);
+      return result
     })
   );
 }
@@ -129,6 +133,8 @@ export default LiveRecognizer;
 //33 total images, 21 images of test subject where 10 are the same image from front view using ssd. Best Result: 0.35490761308480456
 //46 total images, 33 images of test subject from different angles and distances using ssd. Best Result: 0.38832424912123453
 //14 total images, 1 OLD image of test subject from the front (small image 160x160) using ssd. Best Result: 0
+//14 total images, 1 old (2017) image of test subject from the front using ssd. Best Result: 
+
 
 //15 total images, 2 image of test subject from the front using tiny. Best result: 0.333197248181627
 //14 total images, 1 image of test subject from the front using tiny. Best result: 0.22026010587463674 
