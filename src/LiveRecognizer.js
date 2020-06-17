@@ -8,12 +8,12 @@ function loadLabeledImages() {
     labels.map(async (label) => {
       const descriptions = [];
       let nrImages = 
-      label === "Arvid" ? 21
+      label === "Arvid" ? 44
       : label === "Max" ? 2 
       : 13;
       for (let i = 1; i <= nrImages; i++) {
         const img = await faceapi.fetchImage(
-          `https://raw.githubusercontent.com/Mellas84/facerecognitiontest/master/src/images/${label}/${i}.jpg`
+          `https://raw.githubusercontent.com/Mellas84/facerecognitiontest/master/assets/images/${label}/${i}.jpg`
         );
         const detections = await faceapi
           .detectSingleFace(img)
@@ -126,7 +126,8 @@ export default LiveRecognizer;
 //24 total images, 11 image of test subject from the front using ssd. Best result: 0.48838174473824014
 //14 total images, 1 image of test subject from the front using ssd. Best result: 0.21503420705702414
 //15 total images, 2 image of test subject from the front using ssd. Best result: 0.33134250403810084
-//33 total images, 21 images of test subject where 10 are the same image from front view using ssd. Best Result: 
+//33 total images, 21 images of test subject where 10 are the same image from front view using ssd. Best Result: 0.35490761308480456
+//57 total images, 44 images of test subject from different angles and distances using ssd. Best Result: 
 
 //15 total images, 2 image of test subject from the front using tiny. Best result: 0.333197248181627
 //14 total images, 1 image of test subject from the front using tiny. Best result: 0.22026010587463674 
