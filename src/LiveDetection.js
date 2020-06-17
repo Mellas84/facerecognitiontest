@@ -81,12 +81,12 @@ class LiveDetection extends React.Component {
 export default LiveDetection;
 
 function loadLabeledImages() {
-  const labels = ['Arvid', 'max']
+  const labels = ['Arvid', 'Max']
   return Promise.all(
     labels.map(async label => {
       const descriptions = []
       for (let i = 1; i <= 1; i++) {
-        const img = await faceapi.fetchImage(`https://raw.githubusercontent.com/Mellas84/Face-Recognition/master/${label}.jpg`)
+        const img = await faceapi.fetchImage(`https://raw.githubusercontent.com/Mellas84/facerecognitiontest/master/src/images/${label}/${i}.jpg`)
         const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
         if (detections) {
           console.log("success")

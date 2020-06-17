@@ -7,7 +7,8 @@ function loadLabeledImages() {
   return Promise.all(
     labels.map(async (label) => {
       const descriptions = [];
-      for (let i = 1; i <= 2; i++) {
+      let nrImages = labels === "Arvid" ? 10 : 2;
+      for (let i = 1; i <= nrImages; i++) {
         const img = await faceapi.fetchImage(
           `https://raw.githubusercontent.com/Mellas84/facerecognitiontest/master/src/images/${label}/${i}.jpg`
         );
@@ -57,21 +58,22 @@ class LiveRecognizer extends React.Component {
     let video = document.querySelector("video");
 
     const LabeledFaceDescriptors = await loadLabeledImages();
-    const faceMatcher = new faceapi.FaceMatcher(LabeledFaceDescriptors, 0.8);
+    const faceMatcher = new faceapi.FaceMatcher(LabeledFaceDescriptors, 0.6);
     document.getElementById("loading").innerHTML = "";
     setInterval(async () => {
       //SsdMobilenetv1Options <=> TinyFaceDetectorOptions
       const detection = await faceapi
         .detectAllFaces(
           video,
-          new faceapi.SsdMobilenetv1Options({ minConfidence: 0.8 })
+          new faceapi.SsdMobilenetv1Options({ minConfidence: 0.6 })
         )
         .withFaceLandmarks()
         .withFaceDescriptors();
-
+console.log(detection)
       const results = detection.map((d) =>
         faceMatcher.findBestMatch(d.descriptor)
       );
+      console.log(results)
       results.forEach((result) => {
         let label = capitalize(result.label);
         if (label === "Unknown") {
@@ -84,7 +86,7 @@ class LiveRecognizer extends React.Component {
             
         }
       });
-    }, 3000);
+    }, 1000);
   }
 
   render() {
@@ -93,7 +95,6 @@ class LiveRecognizer extends React.Component {
         <h1 id="name"> </h1>
         <div className="video-container">
           <video
-            style={{ display: "none" }}
             autoPlay={true}
             id="video"
             width="620"
