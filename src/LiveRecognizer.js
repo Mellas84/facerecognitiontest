@@ -3,11 +3,14 @@ import "./App.css";
 import * as faceapi from "face-api.js";
 
 function loadLabeledImages() {
-  const labels = ["Arvid", "Max"];
+  const labels = ["Arvid", "Max", "RandomImages"];
   return Promise.all(
     labels.map(async (label) => {
       const descriptions = [];
-      let nrImages = label === "Arvid" ? 11 : 2;
+      let nrImages = 
+      label === "Arvid" ? 1 
+      : label === "Max" ? 2 
+      : 13;
       for (let i = 1; i <= nrImages; i++) {
         const img = await faceapi.fetchImage(
           `https://raw.githubusercontent.com/Mellas84/facerecognitiontest/master/src/images/${label}/${i}.jpg`
@@ -77,13 +80,16 @@ console.log(detection)
       );
       console.log(results)
       results.forEach((result) => {
+        console.log(result.distance)
         let label = capitalize(result.label);
         if (label === "Unknown") {
           console.log(label);
         } else {
+          
           if (document.getElementById("name").innerHTML !== "Hej " + label) {
             document.getElementById("name").innerHTML = "Hej " + label;
             console.log(label)
+            
           }
             
         }
@@ -111,3 +117,8 @@ console.log(detection)
 }
 
 export default LiveRecognizer;
+
+
+//11 total images, 9 images of test subject from different angles using ssd. Best result: 0.48381988931818065
+//3 total images, 1 image of test subject from the front using ssd. Best result: 0.20902870565343248
+//16 total images, 1 image of test subject from the front using ssd. Best result:
