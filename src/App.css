@@ -10,8 +10,15 @@ body{
 }
 
 canvas {
-  position:relative;
-  bottom:2px;
- background:black;
- 
+  position:absolute;
+  bottom:24.5vh;
+}
+#loading {
+  position:absolute;
+  bottom:10px;
+  left:5px;
+}
+#name {
+  position:absolute;
+
 }

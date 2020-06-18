@@ -10,10 +10,10 @@ function loadLabeledImages() {
     labels.map(async (label) => {
 
       const descriptions = [];
-      let nrImages = 
-      label === "Arvid" ? 1
-      : label === "Max" ? 2 
-      : 13;
+      let nrImages =
+      label === "Arvid" ? 20
+      : label === "Max" ? 2
+      : 11;
       for (let i = 1; i <= nrImages; i++) {
         const img = await faceapi.fetchImage(
           `https://raw.githubusercontent.com/Mellas84/facerecognitiontest/master/assets/images/${label}/${i}.jpg`
@@ -24,7 +24,7 @@ function loadLabeledImages() {
           .withFaceDescriptor();
         if (detections) {
           console.log(label+i)
-          
+
           descriptions.push(detections.descriptor);
         }
       }
@@ -63,12 +63,16 @@ class LiveRecognizer extends React.Component {
   }
   async handlePlaying() {
     let video = document.querySelector("video");
-
+    const canvas = faceapi.createCanvasFromMedia(video);
+    document.body.append(canvas)
+    const displaySize = {width : video.width, height: video.height}
     const LabeledFaceDescriptors = await loadLabeledImages();
     let maxDistance = 0.6;
     const faceMatcher = new faceapi.FaceMatcher(LabeledFaceDescriptors, maxDistance);
     document.getElementById("loading").innerHTML = "";
     setInterval(async () => {
+      
+      canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height)
       //SsdMobilenetv1Options <=> TinyFaceDetectorOptions
       const detection = await faceapi
         .detectAllFaces(
@@ -77,26 +81,28 @@ class LiveRecognizer extends React.Component {
         )
         .withFaceLandmarks()
         .withFaceDescriptors();
-      const results = detection.map((d) =>
+        const resizedDetections = faceapi.resizeResults(detection, displaySize)
+      const results = resizedDetections.map((d) =>
         faceMatcher.findBestMatch(d.descriptor)
       );
-      
+
       results.forEach((result) => {
-        
+
         console.log(result.label +" " +result.distance)
         let label = capitalize(result.label);
         if (label === "Unknown") {
           console.log(label);
         } else {
-          
+
           if (document.getElementById("name").innerHTML !== "Hej " + label) {
             document.getElementById("name").innerHTML = "Hej " + label;
             console.log(label)
-            
+
           }
-            
+
         }
       });
+      faceapi.draw.drawDetections(canvas, resizedDetections)
     }, 1000);
   }
 
@@ -108,8 +114,8 @@ class LiveRecognizer extends React.Component {
           <video
             autoPlay={true}
             id="video"
-            width="620"
-            height="460"
+            width="640"
+            height="480"
             onPlaying={this.handlePlaying}
           ></video>
         </div>
@@ -131,16 +137,16 @@ export default LiveRecognizer;
 //33 total images, 21 images of test subject where 10 are the same image from front view using ssd. Best Result: 0.35490761308480456
 //46 total images, 33 images of test subject from different angles and distances using ssd. Best Result: 0.38832424912123453
 //14 total images, 1 OLD image of test subject from the front (small image 160x160) using ssd. Best Result: 0
-//14 total images, 1 old (2017) image of test subject from the front using ssd. Best Result: 
 
 
 //15 total images, 2 image of test subject from the front using tiny. Best result: 0.333197248181627
-//14 total images, 1 image of test subject from the front using tiny. Best result: 0.22026010587463674 
+//14 total images, 1 image of test subject from the front using tiny. Best result: 0.22026010587463674
 //46 total images, 33 images of test subject from different angles and distances using tiny. Best Result: 0.3917487289305787
 //14 total images, 1 OLD image of test subject from the front (small image) using tiny. Best Result: 0.35043252549315534
 /*
-Result: 
+Result:
 More total images doesnt make a difference
 More images of a person makes the certainty lower but works from more angles
 Small images makes everyone look the same
+Weird lighting make sit unable to detect a face (too light / dark)
 */
