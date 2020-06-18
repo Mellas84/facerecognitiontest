@@ -15,7 +15,6 @@ function loadLabeledImages() {
       : label === "Max" ? 2 
       : 13;
       for (let i = 1; i <= nrImages; i++) {
-        console.log(label)
         const img = await faceapi.fetchImage(
           `https://raw.githubusercontent.com/Mellas84/facerecognitiontest/master/assets/images/${label}/${i}.jpg`
         );
@@ -24,8 +23,7 @@ function loadLabeledImages() {
           .withFaceLandmarks()
           .withFaceDescriptor();
         if (detections) {
-          //console.log("success");
-          //console.log(label+i)
+          console.log(label+i)
           
           descriptions.push(detections.descriptor);
         }
@@ -79,13 +77,13 @@ class LiveRecognizer extends React.Component {
         )
         .withFaceLandmarks()
         .withFaceDescriptors();
-console.log(detection)
       const results = detection.map((d) =>
         faceMatcher.findBestMatch(d.descriptor)
       );
-      console.log(results)
+      
       results.forEach((result) => {
-        console.log(result.distance)
+        
+        console.log(result.label +" " +result.distance)
         let label = capitalize(result.label);
         if (label === "Unknown") {
           console.log(label);
