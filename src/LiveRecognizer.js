@@ -4,14 +4,14 @@ import * as faceapi from "face-api.js";
 
 function loadLabeledImages() {
   //if have label without reference picture "unknown" -> "label"
-  const labels = ["Max", "RandomImages"];
+  const labels = ["Max", "RandomImages", "Arvid"];
 
   return Promise.all(
     labels.map(async (label) => {
 
       const descriptions = [];
       let nrImages = 
-      label === "Andreas" ? 0
+      label === "Arvid" ? 1
       : label === "Max" ? 2 
       : 13;
       for (let i = 1; i <= nrImages; i++) {
