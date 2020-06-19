@@ -4,16 +4,16 @@ import * as faceapi from "face-api.js";
 
 function loadLabeledImages() {
   //if have label without reference picture "unknown" -> "label"
-  const labels = ["Max", "RandomImages", "Arvid"];
+  const labels = ["Max", "Stefan", "Gabriella", "Arvid"];
 
   return Promise.all(
     labels.map(async (label) => {
 
       const descriptions = [];
       let nrImages =
-      label === "Arvid" ? 20
-      : label === "Max" ? 2
-      : 11;
+      label === "Arvid" ? 3
+      : label === "Max" ? 4
+      : 1;
       for (let i = 1; i <= nrImages; i++) {
         const img = await faceapi.fetchImage(
           `https://raw.githubusercontent.com/Mellas84/facerecognitiontest/master/assets/images/${label}/${i}.jpg`
@@ -64,10 +64,10 @@ class LiveRecognizer extends React.Component {
   async handlePlaying() {
     let video = document.querySelector("video");
     const canvas = faceapi.createCanvasFromMedia(video);
-    document.body.append(canvas)
+    //document.body.append(canvas)
     const displaySize = {width : video.width, height: video.height}
     const LabeledFaceDescriptors = await loadLabeledImages();
-    let maxDistance = 0.6;
+    let maxDistance = 0.55;
     const faceMatcher = new faceapi.FaceMatcher(LabeledFaceDescriptors, maxDistance);
     document.getElementById("loading").innerHTML = "";
     setInterval(async () => {
@@ -82,12 +82,13 @@ class LiveRecognizer extends React.Component {
         .withFaceLandmarks()
         .withFaceDescriptors();
         const resizedDetections = faceapi.resizeResults(detection, displaySize)
+        
       const results = resizedDetections.map((d) =>
         faceMatcher.findBestMatch(d.descriptor)
       );
 
-      results.forEach((result) => {
-
+      results.forEach(async (result) => {
+        console.log(detection)
         console.log(result.label +" " +result.distance)
         let label = capitalize(result.label);
         if (label === "Unknown") {
@@ -102,7 +103,7 @@ class LiveRecognizer extends React.Component {
 
         }
       });
-      faceapi.draw.drawDetections(canvas, resizedDetections)
+      //faceapi.draw.drawDetections(canvas, resizedDetections)
     }, 1000);
   }
 
@@ -112,6 +113,7 @@ class LiveRecognizer extends React.Component {
         <h1 id="name"> </h1>
         <div className="video-container">
           <video
+          style={{display:"none"}}
             autoPlay={true}
             id="video"
             width="640"
@@ -150,3 +152,11 @@ More images of a person makes the certainty lower but works from more angles
 Small images makes everyone look the same
 Weird lighting make sit unable to detect a face (too light / dark)
 */
+
+//ssd, maxDIstance 0.6
+//3 images: 0/1000
+//1 image: 1/1000 (0.59)
+
+//margin of error seemingly goes down with more reference images, difficult to know for sure.
+//struggeling with:
+//fast movement? bad lighting? sortware or hardware issues?
