@@ -4,15 +4,15 @@ import * as faceapi from "face-api.js";
 
 function loadLabeledImages() {
   //if have label without reference picture "unknown" -> "label"
-  const labels = ["Max", "Stefan", "Gabriella", "Arvid"];
+  const labels = ["Max", "Stefan", "Gabriella", "Arvid", "Mikaela", "Andreas"];
 
   return Promise.all(
     labels.map(async (label) => {
 
       const descriptions = [];
       let nrImages =
-      label === "Arvid" ? 3
-      : label === "Max" ? 4
+      label === "Arvid" ? 1
+      : label === "Max" ? 1
       : 1;
       for (let i = 1; i <= nrImages; i++) {
         const img = await faceapi.fetchImage(
@@ -113,7 +113,7 @@ class LiveRecognizer extends React.Component {
         <h1 id="name"> </h1>
         <div className="video-container">
           <video
-          style={{display:"none"}}
+          //style={{display:"none"}}
             autoPlay={true}
             id="video"
             width="640"
