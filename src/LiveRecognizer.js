@@ -11,8 +11,8 @@ function loadLabeledImages() {
 
       const descriptions = [];
       let nrImages =
-      label === "Arvid" ? 17
-      : label === "Max" ? 3
+      label === "Arvid" ? 3
+      : label === "Max" ? 1
       : 1;
       for (let i = 1; i <= nrImages; i++) {
         const img = await faceapi.fetchImage(
