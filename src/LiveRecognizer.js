@@ -11,7 +11,7 @@ function loadLabeledImages() {
 
       const descriptions = [];
       let nrImages =
-      label === "Arvid" ? 1
+      label === "Arvid" ? 17
       : label === "Max" ? 1
       : 1;
       for (let i = 1; i <= nrImages; i++) {
@@ -88,7 +88,6 @@ class LiveRecognizer extends React.Component {
       );
 
       results.forEach(async (result) => {
-        console.log(detection)
         console.log(result.label +" " +result.distance)
         let label = capitalize(result.label);
         if (label === "Unknown") {
@@ -116,8 +115,8 @@ class LiveRecognizer extends React.Component {
           //style={{display:"none"}}
             autoPlay={true}
             id="video"
-            width="640"
-            height="480"
+            width="150"
+            height="100"
             onPlaying={this.handlePlaying}
           ></video>
         </div>
