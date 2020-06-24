@@ -4,16 +4,16 @@ import * as faceapi from "face-api.js";
 
 function loadLabeledImages() {
   //if have label without reference picture "unknown" -> "label"
-  const labels = ["Max", "Stefan", "Gabriella", "Arvid", "Mikaela", "Andreas"];
+  const labels = ["Max", "Arvid", "Alfie", "Carice", "Emilia", "Iain", "Isaac", "Kit", "Lena", "Maisie", "Nathalie", "Nikolaj", "Peter", "Sophie"];
 
   return Promise.all(
     labels.map(async (label) => {
 
       const descriptions = [];
       let nrImages =
-      label === "Arvid" ? 3
-      : label === "Max" ? 2
-      : 1;
+      label === "Arvid" ? 36
+      : label === "Max" ? 4
+      : 10;
       for (let i = 1; i <= nrImages; i++) {
         const img = await faceapi.fetchImage(
           `https://raw.githubusercontent.com/Mellas84/facerecognitiontest/master/assets/images/${label}/${i}.jpg`
